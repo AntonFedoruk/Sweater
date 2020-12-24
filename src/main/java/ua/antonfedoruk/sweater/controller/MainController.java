@@ -1,9 +1,11 @@
 package ua.antonfedoruk.sweater.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ua.antonfedoruk.sweater.model.Message;
+import ua.antonfedoruk.sweater.model.User;
 import ua.antonfedoruk.sweater.repository.MessageRepository;
 
 import java.util.Map;
@@ -29,11 +31,12 @@ public class MainController {
     }
 
     @PostMapping("/messages")
-    public String addMessage(@RequestParam String text, @RequestParam String tag, Map<String, Object> model) {
-        Message message = new Message();
-        message.setTag(tag);
-        message.setText(text);
-
+    public String addMessage(
+            @AuthenticationPrincipal User user,
+            @RequestParam String text,
+            @RequestParam String tag,
+            Map<String, Object> model) {
+        Message message = new Message(tag, text, user);
         System.out.println(message);
         messageRepository.save(message);
 
@@ -42,7 +45,8 @@ public class MainController {
     }
 
     @PostMapping("/filter")
-    public String filter(@RequestParam String filter, Map<String, Object> model) {
+    public String filter(@RequestParam String filter,
+                         Map<String, Object> model) {
         Iterable<Message> messages;
 
         if (filter != null && !filter.isEmpty()) {
