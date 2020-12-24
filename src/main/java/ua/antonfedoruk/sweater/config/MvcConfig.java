@@ -1,4 +1,4 @@
-package ua.antonfedoruk.sweater.configurations;
+package ua.antonfedoruk.sweater.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;

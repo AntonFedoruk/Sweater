@@ -1,17 +1,15 @@
-package ua.antonfedoruk.sweater.controllers;
+package ua.antonfedoruk.sweater.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import ua.antonfedoruk.sweater.model.Message;
-import ua.antonfedoruk.sweater.repositories.MessageRepository;
+import ua.antonfedoruk.sweater.repository.MessageRepository;
 
 import java.util.Map;
 
 @Controller
-public class GreetingController {
+public class MainController {
     @SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
     @Autowired
     private MessageRepository messageRepository;
@@ -36,6 +34,7 @@ public class GreetingController {
         message.setTag(tag);
         message.setText(text);
 
+        System.out.println(message);
         messageRepository.save(message);
 
         model.put("messages", messageRepository.findAll());
@@ -55,5 +54,11 @@ public class GreetingController {
         model.put("messages", messages);
 
         return "main";
+    }
+
+    @DeleteMapping("/messages/{tag}")
+    public String deleteByTag(@PathVariable String tag) {
+        messageRepository.deleteByTag(tag);
+        return "redirect:/messages";
     }
 }
