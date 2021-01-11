@@ -46,7 +46,7 @@ public class MainController {
             @RequestParam String text,
             @RequestParam String tag,
             Map<String, Object> model) {
-        Message message = new Message(tag, text, user);
+        Message message = new Message(text, tag, user);
         System.out.println(message);
         messageRepository.save(message);
 
