@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import ua.antonfedoruk.sweater.model.Message;
 import ua.antonfedoruk.sweater.model.User;
 import ua.antonfedoruk.sweater.repository.MessageRepository;
@@ -45,9 +46,14 @@ public class MainController {
             @AuthenticationPrincipal User user,
             @RequestParam String text,
             @RequestParam String tag,
-            Map<String, Object> model) {
+            Map<String, Object> model,
+            @RequestParam("file")MultipartFile file) {
         Message message = new Message(text, tag, user);
-        System.out.println(message);
+
+        if (file != null) {
+
+        }
+
         messageRepository.save(message);
 
         model.put("messages", messageRepository.findAll());
