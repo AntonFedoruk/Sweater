@@ -1,6 +1,7 @@
 package ua.antonfedoruk.sweater.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,13 +13,19 @@ import ua.antonfedoruk.sweater.model.Message;
 import ua.antonfedoruk.sweater.model.User;
 import ua.antonfedoruk.sweater.repository.MessageRepository;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Map;
+import java.util.UUID;
 
 @Controller
 public class MainController {
     @SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
     @Autowired
     private MessageRepository messageRepository;
+
+    @Value("${upload.path}")
+    private String uploadPath;
 
     @GetMapping("/")
     public String greeting(Map<String, Object> model) {
@@ -47,11 +54,20 @@ public class MainController {
             @RequestParam String text,
             @RequestParam String tag,
             Map<String, Object> model,
-            @RequestParam("file")MultipartFile file) {
+            @RequestParam("file")MultipartFile file) throws IOException {
         Message message = new Message(text, tag, user);
 
-        if (file != null) {
+        if (file != null && !file.getOriginalFilename().isEmpty()) {
+            File uploadDir = new File(uploadPath);
+            if (!uploadDir.exists()) uploadDir.mkdir();
 
+            //create unique file name with help of UUID(Universally Unique Identifier)
+            String uuidFile = UUID.randomUUID().toString();
+            String resultFileName = uuidFile + "." + file.getOriginalFilename();
+
+            file.transferTo( new File(uploadPath + "/" + resultFileName));
+
+            message.setFilename(resultFileName);
         }
 
         messageRepository.save(message);
