@@ -23,6 +23,9 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
+    private String email;
+    private String activationCode;
+
     public boolean isAdmin(){
         return roles.contains(Role.ADMIN);
     }
