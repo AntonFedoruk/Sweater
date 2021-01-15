@@ -21,6 +21,11 @@
                     <a class="nav-link" href="/user">User list</a>
                 </li>
             </#if>
+            <#if user??> <!--цю змінну ми самі вказували в security.ftlh-->
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/profile">Profile</a>
+                </li>
+            </#if>
         </ul>
         <div class="navbar-text mr-3">${name}</div>
         <@l.logout />
