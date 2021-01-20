@@ -36,13 +36,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .loginPage("/login").permitAll()
                     .defaultSuccessUrl("/messages")
                 .and()
+                    .rememberMe() //even if session in Tomcat was closed, response identifier will try to reauthorize us
+                .and()
                     .logout()
                     .permitAll();
-//                    .logoutRequestMatcher(new AntPathRequestMatcher("/registration/logout", "POST"))
-//                    .invalidateHttpSession(true)
-//                    .clearAuthentication(true)
-//                    .deleteCookies("JSESSIONID")
-//                    .logoutSuccessUrl("/registration/login");
     }
 
     @Bean
