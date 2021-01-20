@@ -3,23 +3,50 @@
         <div class="form-group row">
             <label for="username" class="col-sm-2 col-form-label"> User name:</label>
             <div class="col-sm-6">
-                <input type="text" class="form-control" id="username" name="username"
-                       placeholder="Enter username"/>
+                <input type="text" class="form-control <#if usernameError??>is-invalid</#if>"
+                       id="username" name="username" placeholder="Enter username" value="<#if user??>${user.username}</#if>"/>
+                <#if usernameError??>
+                    <div class="invalid-feedbackk">
+                        ${usernameError}
+                    </div>
+                </#if>
             </div>
         </div>
         <div class="form-group row">
             <label for="password" class="col-sm-2 col-form-label"> Password:</label>
             <div class="col-sm-6">
-                <input type="password" class="form-control" id="password" name="password"
-                       placeholder="Enter password"/>
+                <input type="password" class="form-control <#if passwordError??>is-invalid</#if>"
+                       id="password" name="password" placeholder="Enter password"/>
+                <#if passwordError??>
+                    <div class="invalid-feedbackk">
+                        ${passwordError}
+                    </div>
+                </#if>
             </div>
         </div>
         <#if isRegisterForm>
             <div class="form-group row">
+                <label for="password2" class="col-sm-2 col-form-label"> Password confirmation:</label>
+                <div class="col-sm-6">
+                    <input type="password" class="form-control <#if password2Error??>is-invalid</#if>"
+                           id="password2" name="password2" placeholder="Retype password"/>
+                    <#if password2Error??>
+                        <div class="invalid-feedbackk">
+                            ${password2Error}
+                        </div>
+                    </#if>
+                </div>
+            </div>
+            <div class="form-group row">
                 <label for="email" class="col-sm-2 col-form-label"> Email:</label>
                 <div class="col-sm-6">
-                    <input type="email" class="form-control" id="email" name="email"
-                           placeholder="Enter email"/>
+                    <input type="email" class="form-control <#if emailError??>is-invalid</#if>" id="email" name="email"
+                           placeholder="Enter email" value="<#if user??>${user.email}</#if>"/>
+                    <#if emailError??>
+                        <div class="invalid-feedbackk">
+                            ${emailError}
+                        </div>
+                    </#if>
                 </div>
             </div>
         </#if>
