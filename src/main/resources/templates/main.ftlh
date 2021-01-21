@@ -10,64 +10,6 @@
             </form>
         </div>
     </div>
-<#-- message adding -->
-    <a class="btn btn-primary" data-toggle="collapse" href="#addNewMessage" role="button" aria-expanded="false"
-       aria-controls="addNewMessage">
-        Add new message
-    </a>
-    <div class="collapse <#if message??>show</#if>" id="addNewMessage">
-        <div class="form-group mt-3">
-            <form method="post" action="/messages" enctype="multipart/form-data">
-                <div class="form-group">
-                    <input type="text" class="form-control <#if (errorsMap['textError'])??>is-invalid</#if>"
-                           value="<#if message??>${message.text}</#if>" name="text" placeholder="type message"/>
-                    <#if (errorsMap['textError'])??>
-                        <div class="invalid-feedbackk">
-                            ${errorsMap['textError']}
-                        </div>
-                    </#if>
-                </div>
-                <div class="form-group">
-                    <input type="text" class="form-control <#if (errorsMap['tagError'])??>is-invalid</#if>"
-                           value="<#if message??>${message.tag}</#if>" name="tag" placeholder="type tag"/>
-                    <#if (errorsMap['tagError'])??>
-                        <div class="invalid-feedbackk">
-                            ${errorsMap['tagError']}
-                        </div>
-                    </#if>
-                </div>
-                <div class="form-group">
-                    <div class="custom-file">
-<#--                        <label class="custom-file-label" for="customFile">Choose file</label>-->
-                        <input type="file" name="file" id="customFile" value="message.filename" placeholder="choose file">
-                    </div>
-                </div>
-                <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-                <button type="submit" class="btn btn-primary">Add message</button>
-            </form>
-        </div>
-    </div>
-<#-- messages list -->
-    <div class="card-columns">
-        <#list messages as message>
-            <div class="card my-3">
-                <div>
-                    <#if message.filename??>
-                        <img class="card-img-top" src="/img/${message.filename}">
-                    </#if>
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">${message.tag}</h5>
-                    <p class="card-text">${message.text}</p>
-                    <div class="card-footer text-muted">
-                        ${message.authorName}
-                        <a href="#" class="btn btn-link ml-3">Edit</a>
-                    </div>
-
-                </div>
-            </div>
-        <#else>
-            No messages
-        </#list>
-    </div>
+<#include "parts/messageEdit.ftlh" />
+<#include  "parts/messageList.ftlh" />
 </@c.page>

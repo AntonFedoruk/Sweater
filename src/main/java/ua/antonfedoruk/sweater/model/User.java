@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Set;
 
 @Data
@@ -37,6 +38,10 @@ public class User implements UserDetails {
 
     private String activationCode;
 
+    //all messages that user have created
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY) //we should use mappedBy param, because other side of this mapping isn't 'user'(it's author)
+    private Set<Message> messages;
+
     public boolean isAdmin(){
         return roles.contains(Role.ADMIN);
     }
@@ -64,5 +69,18 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return isActive();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

@@ -16,6 +16,11 @@
             <li class="nav-item">
                 <a class="nav-link" href="/messages">Messages</a>
             </li>
+            <#if user??> <!--цю змінну ми самі вказували в security.ftlh-->
+                <li class="nav-item">
+                    <a class="nav-link" href="/user-messages/${currentUserId}">My messages</a>
+                </li>
+            </#if>
             <#if isAdmin>
                 <li class="nav-item">
                     <a class="nav-link" href="/user">User list</a>
