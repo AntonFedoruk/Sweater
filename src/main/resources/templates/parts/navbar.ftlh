@@ -28,11 +28,11 @@
             </#if>
             <#if user??> <!--цю змінну ми самі вказували в security.ftlh-->
                 <li class="nav-item">
-                    <a class="nav-link" href="/user/profile">Profile</a>
+                    <a class="nav-link" href="/user/profile">Profile settings</a>
                 </li>
             </#if>
         </ul>
-        <div class="navbar-text mr-3">${name}</div>
+        <div class="navbar-text mr-3"><#if user??>${name}<#else>Please, login</#if></div>
         <@l.logout />
     </div>
 </nav>

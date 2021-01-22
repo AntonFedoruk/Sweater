@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -27,7 +28,8 @@ public class User implements UserDetails {
 
     private boolean active;
 
-    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER) //сформує додаткову таблицю для зберігання enum
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    //сформує додаткову таблицю для зберігання enum
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
@@ -39,10 +41,27 @@ public class User implements UserDetails {
     private String activationCode;
 
     //all messages that user have created
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY) //we should use mappedBy param, because other side of this mapping isn't 'user'(it's author)
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    //we should use mappedBy param, because other side of this mapping isn't 'user'(it's author)
     private Set<Message> messages;
 
-    public boolean isAdmin(){
+
+    //subscribers and subscriptions locate in one table
+    //  followers
+    @ManyToMany
+    //to organize many2many relation we need 1 more table JPA annotation @JoinTable help to deal with it
+    @JoinTable(name = "user_subscriptions", //table name
+            joinColumns = {@JoinColumn(name = "channel_id")}, //collection that contain 1 element; collection's name 'channel_id', like person's chanel
+            inverseJoinColumns = {@JoinColumn(name = "subscriber_id")})
+    private Set<User> subscribers = new HashSet<>();
+    // subscriptions
+    @ManyToMany
+    @JoinTable(name = "user_subscriptions",
+            joinColumns = {@JoinColumn(name = "subscriber_id")},
+            inverseJoinColumns = {@JoinColumn(name = "channel_id")})
+    private Set<User> subscriptions;
+
+    public boolean isAdmin() {
         return roles.contains(Role.ADMIN);
     }
 
