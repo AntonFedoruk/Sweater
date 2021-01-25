@@ -2,6 +2,10 @@ package ua.antonfedoruk.sweater.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,16 +42,19 @@ public class MainController {
     }
 
     @GetMapping("/messages")
-    public String main(@RequestParam(required = false) String filter, Model model) {
-        Iterable<Message> messages = messageRepository.findAll();
+    public String main(@RequestParam(required = false) String filter,
+                       Model model,
+                       @PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC) Pageable pageable) { //add можливість прокручування
+        Page<Message> page;
 
         if (filter != null && !filter.isEmpty()) {
-            messages = messageRepository.findByTag(filter);
+            page = messageRepository.findByTag(filter, pageable);
         } else {
-            messages = messageRepository.findAll();
+            page = messageRepository.findAll(pageable);
         }
 
-        model.addAttribute("messages", messages);
+        model.addAttribute("page", page);
+        model.addAttribute("url", "/messages");
         model.addAttribute("filter", filter);
 
         return "main";
@@ -60,7 +67,8 @@ public class MainController {
 //          !!!THIS('BindingResult') ARGUMENT MUST STAY BEFORE 'MODEL' ARGUMENT, to prevent their representation in view!!!
             BindingResult bindingResult, //list of arguments and messages about validation`s errors
             Model model,
-            @RequestParam("file") MultipartFile file) throws IOException {
+            @RequestParam("file") MultipartFile file,
+            @PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC) Pageable pageable) throws IOException {
         message.setAuthor(user);
 
         if (bindingResult.hasErrors()) {
@@ -74,7 +82,10 @@ public class MainController {
 
             messageRepository.save(message);
         }
+        Page<Message> page = messageRepository.findAll(pageable);
 
+        model.addAttribute("page", page);
+        model.addAttribute("url", "/messages");
         model.addAttribute("messages", messageRepository.findAll());
         return "main";
     }
@@ -99,8 +110,10 @@ public class MainController {
     public String userMessages(@AuthenticationPrincipal User currentUser,
                                @PathVariable(name = "userId") User user,
                                Model model,
-                               @RequestParam(required = false) Message message) {
+                               @RequestParam(required = false) Message message,
+                               @PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC) Pageable pageable) {
         Set<Message> messages = user.getMessages();
+        Page<Message> page = messageRepository.findByAuthor(user, pageable);
         model.addAttribute("subscriptionsCount", user.getSubscriptions().size());
         model.addAttribute("subscribersCount", user.getSubscribers().size());
         model.addAttribute("isSubscriber", user.getSubscribers().contains(currentUser));
@@ -108,6 +121,8 @@ public class MainController {
         model.addAttribute("messages", messages);
         model.addAttribute("message", message);
         model.addAttribute("isCurrentUser", currentUser.equals(user));
+        model.addAttribute("page", page);
+        model.addAttribute("url", "/user-messages/" + user.getId());
         return "userMessages";
     }
 
