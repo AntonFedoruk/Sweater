@@ -1,16 +1,20 @@
 package ua.antonfedoruk.sweater.model;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @Entity
 @Table(name = "messages")
+@ToString(of = {"id", "text", "tag"})
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

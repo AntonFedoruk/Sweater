@@ -1,6 +1,8 @@
 package ua.antonfedoruk.sweater.model;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -12,9 +14,11 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "users")
+@ToString(of = {"id", "username", "active", "email"})
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

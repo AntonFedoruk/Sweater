@@ -1,6 +1,6 @@
 <#assign
 known = Session.SPRING_SECURITY_CONTEXT??
->
+> <#-- if this obj is defined in context -> we can work with users session -->
 
 <#if known>
     <#assign
