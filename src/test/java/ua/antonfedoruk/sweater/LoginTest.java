@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
-import ua.antonfedoruk.sweater.controller.MainController;
+import ua.antonfedoruk.sweater.controller.MessageController;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class LoginTest {
     //Spring interprets the @Autowired annotation, and the controller is injected before the test methods are run.
     @Autowired
-    private MainController mainController;
+    private MessageController messageController;
 
     @Autowired
     private MockMvc mockMvc;
@@ -38,7 +38,7 @@ public class LoginTest {
     @Test // @Test annotation notices all tests methods from test case class(this class)
     public void contextLoads() throws Exception {
         //To convince yourself that the context is creating your controller, you could add an assertion
-        assertThat(mainController).isNotNull(); //We use AssertJ (which provides assertThat() and other methods) to express the test assertions.
+        assertThat(messageController).isNotNull(); //We use AssertJ (which provides assertThat() and other methods) to express the test assertions.
     }
 
     @Test
