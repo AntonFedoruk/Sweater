@@ -17,6 +17,14 @@
         <script src="https://www.google.com/recaptcha/api.js"></script>
         <!-- Fontawesome -->
         <script src="https://kit.fontawesome.com/9932631f18.js" crossorigin="anonymous"></script>
+        <!-- Turbolinks -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/turbolinks/5.2.0/turbolinks.js"></script>
+        <style>
+            .turbolinks-progress-bar {
+                height: 2px;
+                background-color: navy;
+            }
+        </style>
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
         <script defer src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
