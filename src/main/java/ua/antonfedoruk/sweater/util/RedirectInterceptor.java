@@ -12,10 +12,10 @@ public class RedirectInterceptor extends HandlerInterceptorAdapter {
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         if (modelAndView != null) {
             //this string contain URL arguments which stand after the question mark; as arguments aren't obvious we should add check
-            String args = request.getQueryString() != null ? request.getQueryString() : "";
+            String args = request.getQueryString() != null ? ("?" + request.getQueryString()) : "";
 
             //get redirection url
-            String url = request.getRequestURI().toString() + "?" + args;
+            String url = request.getRequestURI().toString() + args;
 
             //add header with necessary  url
             response.setHeader("Turbolinks-Location", url);
