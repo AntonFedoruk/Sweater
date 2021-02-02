@@ -1,4 +1,5 @@
 # Sweater
+<<<<<<< HEAD
 ![sweater logo](https://64.media.tumblr.com/5ba7b81cf02f5d75cd5bbcfa4bad6f65/a1f672c4e74a48dd-a4/s500x750/c2396851ec38487105cff1e20351de664b1e7138.png)
 
 This is a simple clone of Twitter<br/>
@@ -17,3 +18,6 @@ At the main page we can see list of recently added messages
 and some kind of metadata(writer, tag, likes)
 
 [Reference Documentation](./HELP.md)
+=======
+Simple clone of Twitter
+>>>>>>> 0315192ae7dfcf6fb90d5f635ffa7f83ed744c6b
